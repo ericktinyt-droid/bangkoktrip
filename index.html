@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>来泼水吧 💦 Bangkok Songkran 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
+  <style>
   :root {
     --bg-deep: #0a0014;
     --bg-card: rgba(255,255,255,0.04);
@@ -176,56 +177,6 @@
     backdrop-filter: blur(10px);
   }
 
-  /* ═══ Music Player ═══ */
-  .music-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 50;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid var(--glass-border);
-    background: var(--glass);
-    backdrop-filter: blur(20px);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    color: var(--neon-cyan);
-  }
-  .music-btn:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,240,255,0.3); }
-  .music-btn.playing { border-color: var(--neon-magenta); animation: musicPulse 1s ease-in-out infinite; }
-  @keyframes musicPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(255,0,229,0.3); }
-    50% { box-shadow: 0 0 25px rgba(255,0,229,0.5); }
-  }
-
-  .eq-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 18px;
-  }
-  .eq-bar {
-    width: 3px;
-    background: var(--neon-cyan);
-    border-radius: 2px;
-    transition: height 0.15s ease;
-  }
-  .music-btn.playing .eq-bar { animation: eqBounce 0.6s ease-in-out infinite alternate; }
-  .music-btn.playing .eq-bar:nth-child(1) { animation-delay: 0s; }
-  .music-btn.playing .eq-bar:nth-child(2) { animation-delay: 0.1s; }
-  .music-btn.playing .eq-bar:nth-child(3) { animation-delay: 0.2s; }
-  .music-btn.playing .eq-bar:nth-child(4) { animation-delay: 0.15s; }
-  .music-btn.playing .eq-bar:nth-child(5) { animation-delay: 0.05s; }
-  .music-btn:not(.playing) .eq-bar { height: 4px !important; }
-  @keyframes eqBounce {
-    0% { height: 4px; }
-    100% { height: 18px; }
-  }
-  .music-btn.playing .eq-bar { background: var(--neon-magenta); }
 
   /* ═══ Container ═══ */
   .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
@@ -523,6 +474,7 @@
     padding: 8px 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     cursor: grab;
+    user-select: none;
   }
   .room-guest:last-of-type { border-bottom: none; }
   .guest-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -752,19 +704,382 @@
   .toast.show { display: block; }
 
   @media (max-width: 768px) {
+    body { padding-bottom: 150px; }
+    .hero { padding: 50px 20px 30px; }
     .hero h1 { font-size: 32px; }
     .hotel-grid { grid-template-columns: repeat(2, 1fr); }
     .rooms-grid { grid-template-columns: 1fr; }
-    .summary-stats { gap: 14px; }
-    .section-title { font-size: 18px; }
+    .summary-stats { gap: 12px; }
+    .section-title { font-size: 18px; margin-top: 36px; }
     .night-tabs { width: 100%; }
+    
+    /* Summary bar tweaks for mobile */
+    .summary-bar { padding: 12px 16px; }
+    .summary-inner { justify-content: center; gap: 16px; }
+    .summary-stats { justify-content: center; width: 100%; gap: 20px; }
+    .stat-value { font-size: 16px; }
+    .stat-label { font-size: 9px; }
+    .summary-btn { width: 100%; padding: 12px; font-size: 14px; margin-top: 4px; }
+    
+    /* Modal mobile adjustments */
+    .modal { max-height: 90vh; width: 95%; }
+    .modal-body { padding: 16px; }
   }
+  
   @media (max-width: 480px) {
     .hotel-grid { grid-template-columns: 1fr; }
-    .people-grid { grid-template-columns: 1fr 1fr; }
-    .hero h1 { font-size: 26px; }
+    .people-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero h1 { font-size: 28px; }
+    .hero-sub { font-size: 10px; letter-spacing: 0.15em; }
+    .hero-date { font-size: 11px; padding: 8px 16px; }
+    
+    .room-card { border-radius: 12px; }
+    .room-header { padding: 10px 14px; }
+    .room-body { padding: 10px 14px; }
+    
+    /* Compact summary for very small screens */
+    .summary-stats { gap: 12px; }
+    .stat-value { font-size: 14px; }
+    .stat-value.total-name { display: none; } /* Hide hotel name to save space */
+    
+    /* Better touch targets */
+    .guest-remove { width: 32px; height: 32px; font-size: 14px; }
   }
-</style>
+  /* ═══ Split Money ═══ */
+  .split-controls { display: flex; gap: 12px; margin-bottom: 20px; }
+  .action-btn {
+    flex: 1;
+    padding: 14px;
+    background: rgba(0,240,255,0.15);
+    border: 1px solid rgba(0,240,255,0.3);
+    border-radius: var(--radius);
+    color: var(--neon-cyan);
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+  }
+  .action-btn:hover { background: rgba(0,240,255,0.25); box-shadow: 0 0 20px rgba(0,240,255,0.2); transform: translateY(-2px); }
+  .action-btn.secondary {
+    background: rgba(255,0,229,0.15);
+    border-color: rgba(255,0,229,0.3);
+    color: var(--neon-magenta);
+  }
+  .action-btn.secondary:hover { background: rgba(255,0,229,0.25); box-shadow: 0 0 20px rgba(255,0,229,0.2); }
+
+  .expense-list { display: flex; flex-direction: column; gap: 10px; }
+  .expense-item {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+  }
+  .expense-item:hover { border-color: rgba(255,255,255,0.2); }
+  .ex-info { flex: 1; }
+  .ex-desc { font-size: 14px; font-weight: 500; color: var(--text-w); margin-bottom: 4px; }
+  .ex-meta { font-size: 11px; color: var(--text-dim); }
+  .ex-amount {
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--neon-yellow);
+    margin-left: 16px;
+  }
+  .ex-delete {
+    width: 24px; height: 24px;
+    margin-left: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,59,48,0.3);
+    background: rgba(255,59,48,0.1);
+    color: #ff3b30;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
+  .ex-delete:hover { opacity: 1; transform: scale(1.1); }
+
+  /* Form Styles */
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; font-family: 'Orbitron'; letter-spacing: 0.05em; }
+  .form-input, .form-select {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 12px;
+    color: #fff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--neon-cyan); }
+  
+  .beneficiary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+  .ben-chip {
+    padding: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .ben-chip.selected {
+    background: rgba(0,240,255,0.15);
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-weight: 600;
+  }
+
+  .settle-row {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .settle-arrow { color: var(--text-muted); font-size: 10px; padding: 0 8px; }
+  .settle-amt { font-family: 'Orbitron'; color: var(--neon-green); font-weight: 700; margin-left: auto; }
+
+  /* ═══ Drink Bid ═══ */
+  .drink-bid-card {
+    background: linear-gradient(135deg, rgba(255,107,0,0.15), rgba(255,0,229,0.1));
+    border: 1px solid rgba(255,107,0,0.3);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .drink-bid-card::before {
+    content: '🍺';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.1;
+    transform: rotate(15deg);
+  }
+  .bid-result {
+    font-family: 'Orbitron', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--neon-orange);
+    text-shadow: 0 0 20px rgba(255,107,0,0.4);
+    margin: 16px 0;
+    min-height: 40px;
+  }
+  .bid-multiplier {
+    font-size: 48px;
+    color: var(--neon-magenta);
+    text-shadow: 0 0 30px rgba(255,0,229,0.5);
+  }
+  .bid-btn {
+    background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255,107,0,0.3);
+    transition: all 0.3s;
+  }
+  .bid-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,107,0,0.5); }
+  .bid-btn:active { transform: scale(0.95); }
+
+  /* ═══ Rule Card ═══ */
+  .rule-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--glass-border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .rule-card strong { color: var(--neon-cyan); }
+  .rule-list { list-style: none; padding-left: 0; }
+  .rule-list li { margin-bottom: 8px; position: relative; padding-left: 18px; }
+  .rule-list li::before {
+    content: '►';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    font-size: 10px;
+    color: var(--neon-magenta);
+  }
+
+  .companion-card {
+    background: linear-gradient(135deg, rgba(255,0,229,0.1), rgba(0,240,255,0.1));
+    border: 1px dashed var(--neon-pink);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .companion-result {
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px rgba(255,0,229,0.4);
+    margin: 12px 0;
+    min-height: 28px;
+  }
+  .companion-btn {
+    background: rgba(255,0,229,0.15);
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .companion-btn:hover { background: var(--neon-pink); color: #fff; box-shadow: 0 0 15px rgba(255,0,229,0.4); }
+
+  .bid-dare {
+    font-size: 13px;
+    color: var(--neon-yellow);
+    margin-top: 8px;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.5s;
+    min-height: 20px;
+  }
+  .bid-dare.show { opacity: 1; }
+
+  /* ═══ Festival Radar ═══ */
+  .festival-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .festival-card {
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .festival-card.s2o {
+    background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(0,80,255,0.1));
+    border: 1px solid rgba(0,240,255,0.3);
+  }
+  .festival-card.siam {
+    background: linear-gradient(135deg, rgba(255,50,50,0.1), rgba(255,180,0,0.1));
+    border: 1px solid rgba(255,50,50,0.3);
+  }
+  .fest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .fest-logo {
+    font-family: 'Orbitron';
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+  }
+  .s2o .fest-logo { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0,240,255,0.4); }
+  .siam .fest-logo { color: #ff3b30; text-shadow: 0 0 10px rgba(255,59,48,0.4); }
+  .fest-loc { font-size: 11px; color: var(--text-dim); }
+
+  .fest-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .f-tab {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid transparent;
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-family: 'Orbitron';
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .f-tab:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .s2o .f-tab.active { background: rgba(0,240,255,0.2); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+  .siam .f-tab.active { background: rgba(255,59,48,0.2); border-color: #ff3b30; color: #ff3b30; }
+
+  .fest-body { flex: 1; min-height: 140px; }
+  .dj-list { display: none; animation: fadeSlide 0.3s ease; }
+  .dj-list.active { display: block; }
+  .dj-item {
+    font-size: 14px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-w);
+  }
+  .dj-item.headliner {
+    font-family: 'Orbitron';
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    padding: 8px 0;
+  }
+  .s2o .dj-item.headliner { color: var(--neon-cyan); }
+  .siam .dj-item.headliner { color: var(--neon-orange); }
+
+  .fest-btn {
+    display: block;
+    margin-top: 16px;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-family: 'Orbitron';
+    font-weight: 700;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .s2o .fest-btn {
+    background: rgba(0,240,255,0.1);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+  }
+  .s2o .fest-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px rgba(0,240,255,0.4); }
+  .siam .fest-btn {
+    background: rgba(255,59,48,0.1);
+    border: 1px solid #ff3b30;
+    color: #ff3b30;
+  }
+  .siam .fest-btn:hover { background: #ff3b30; color: #fff; box-shadow: 0 0 20px rgba(255,59,48,0.4); }
+
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
@@ -784,16 +1099,6 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Music Button -->
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()">
-  <div class="eq-bars">
-    <div class="eq-bar" style="height:6px"></div>
-    <div class="eq-bar" style="height:12px"></div>
-    <div class="eq-bar" style="height:8px"></div>
-    <div class="eq-bar" style="height:14px"></div>
-    <div class="eq-bar" style="height:10px"></div>
-  </div>
-</button>
 
 <div class="content">
   <!-- Hero -->
@@ -813,10 +1118,127 @@
     <div class="section-sub">全阵容 · 9位泼水战士</div>
     <div class="people-grid" id="peopleGrid"></div>
 
-    <div class="section-title">Room Setup</div>
-    <div class="section-sub">拖拽调整 · 点 ✕ 移出 · 点 + 加房</div>
+    <!-- Festival Radar Module -->
+    <div class="section-title">Party Radar</div>
+    <div class="section-sub">今日 DJ 安排 & 购票</div>
+    
+    <div class="festival-grid">
+      <!-- S2O Card -->
+      <div class="festival-card s2o">
+        <div class="fest-header">
+          <div class="fest-logo">💦 S2O FESTIVAL</div>
+          <div class="fest-loc">📍 Live Park Rama 9</div>
+        </div>
+        <div class="fest-tabs" id="s2oTabs">
+          <button class="f-tab active" onclick="switchFestTab('s2o', 0)">APR 11</button>
+          <button class="f-tab" onclick="switchFestTab('s2o', 1)">APR 12</button>
+          <button class="f-tab" onclick="switchFestTab('s2o', 2)">APR 13</button>
+        </div>
+        <div class="fest-body">
+          <div class="dj-list active" id="s2o-0">
+            <div class="dj-item headliner">ALAN WALKER</div>
+            <div class="dj-item headliner">STEVE AOKI</div>
+            <div class="dj-item">Lost Frequencies</div>
+            <div class="dj-item">I Hate Models</div>
+          </div>
+          <div class="dj-list" id="s2o-1">
+            <div class="dj-item headliner">ZEDD</div>
+            <div class="dj-item headliner">DON DIABLO</div>
+            <div class="dj-item">Dabin</div>
+            <div class="dj-item">Subtronics</div>
+          </div>
+          <div class="dj-list" id="s2o-2">
+            <div class="dj-item headliner">KYGO</div>
+            <div class="dj-item headliner">GRYFFIN</div>
+            <div class="dj-item">Da Tweekaz</div>
+            <div class="dj-item">Acraze</div>
+          </div>
+        </div>
+        <a href="https://www.s2ofestival.com/" target="_blank" class="fest-btn">BUY TICKETS 🎟️</a>
+      </div>
+
+      <!-- Siam Songkran Card -->
+      <div class="festival-card siam">
+        <div class="fest-header">
+          <div class="fest-logo">👹 SIAM SONGKRAN</div>
+          <div class="fest-loc">📍 Bravo BKK (RCA)</div>
+        </div>
+        <div class="fest-tabs" id="siamTabs">
+          <button class="f-tab active" onclick="switchFestTab('siam', 0)">11</button>
+          <button class="f-tab" onclick="switchFestTab('siam', 1)">12</button>
+          <button class="f-tab" onclick="switchFestTab('siam', 2)">13</button>
+          <button class="f-tab" onclick="switchFestTab('siam', 3)">14</button>
+        </div>
+        <div class="fest-body">
+          <div class="dj-list active" id="siam-0">
+            <div class="dj-item headliner">MARTIN GARRIX</div>
+            <div class="dj-item">22Bullets</div>
+            <div class="dj-item">Julian Jordan</div>
+          </div>
+          <div class="dj-list" id="siam-1">
+            <div class="dj-item headliner">MARSHMELLO</div>
+            <div class="dj-item">Slushii</div>
+            <div class="dj-item">Sikdope</div>
+          </div>
+          <div class="dj-list" id="siam-2">
+            <div class="dj-item headliner">JOHN SUMMIT</div>
+            <div class="dj-item headliner">LAYTON GIORDANI</div>
+            <div class="dj-item">Arcando</div>
+          </div>
+          <div class="dj-list" id="siam-3">
+            <div class="dj-item headliner">AGENTS OF TIME</div>
+            <div class="dj-item headliner">BEN NICKY</div>
+            <div class="dj-item">Andromedik</div>
+          </div>
+        </div>
+        <a href="https://siamsongkran.info/" target="_blank" class="fest-btn">BUY TICKETS 🎟️</a>
+      </div>
+    </div>
+
+    <div class="section-title">Split Money</div>
+    <div class="section-sub">记账小本本 · 自动计算AA</div>
+    
+    <div class="split-controls">
+      <button class="action-btn" onclick="openExpenseModal()">+ 记一笔</button>
+      <button class="action-btn secondary" onclick="showSettlement()">结算方案</button>
+    </div>
+
+    <div id="expenseList" class="expense-list"></div>
+    
+    <div class="section-title" style="margin-top: 60px;">Room Bid</div>
+    <div class="section-sub">
+      拖拽调整 · 截止: 09/04 · <span style="color:var(--neon-yellow);cursor:pointer;text-decoration:underline" onclick="randomizeRooms()">🎲 每日随机</span>
+    </div>
+
     <div class="night-tabs" id="nightTabs"></div>
     <div id="nightContents"></div>
+    
+    <div class="rule-card">
+      <div style="font-family:'Orbitron';font-weight:700;color:var(--neon-cyan);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em">
+        📜 Game &nbsp; Rules
+      </div>
+      <ul class="rule-list">
+        <li><strong>随机分配：</strong>每日 0:00 系统生成初始分配方案。</li>
+        <li><strong>自由调整：</strong>截止 <strong>04/09</strong> 前，你可以随意拖拽交换房间。</li>
+        <li><strong>锁定：</strong>04/09 后所有房间锁定，无法更改。</li>
+        <li><strong>Bid Your Room：</strong>如果不满意分配，可以使用下方工具生成酒局筹码，向他人发起挑战交换房间！</li>
+      </ul>
+    </div>
+
+    <!-- Drink Bid Module -->
+    <div class="drink-bid-card">
+      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase">DRINK FOR YOUR ROOM</div>
+      <div class="bid-result" id="bidResult">READY?</div>
+      <div class="bid-dare" id="bidDare"></div>
+      <button class="bid-btn" onclick="rollDrinkBid()">🎰 SPIN TO BID</button>
+
+      <!-- Companion Module -->
+      <div class="companion-card">
+        <div style="font-size:11px;color:var(--neon-pink);letter-spacing:0.05em;margin-bottom:8px">👯‍♀️ LUCKY COMPANION</div>
+        <div class="companion-result" id="compResult">?</div>
+        <button class="companion-btn" onclick="rollCompanion()">WHO DRINKS WITH YOU?</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -836,6 +1258,35 @@
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- Expense Modal -->
+<div class="modal-overlay" id="expenseModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>记一笔</h2>
+      <button class="modal-close" onclick="closeExpenseModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">WHO PAID</label>
+        <select class="form-select" id="exPayer"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">AMOUNT ($)</label>
+        <input type="number" class="form-input" id="exAmount" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">FOR WHAT</label>
+        <input type="text" class="form-input" id="exDesc" placeholder="Dinner, Taxi, etc.">
+      </div>
+      <div class="form-group">
+        <label class="form-label">FOR WHOM (Default: All)</label>
+        <div class="beneficiary-grid" id="exBen"></div>
+      </div>
+      <button class="action-btn" onclick="saveExpense()">CONFIRM</button>
+    </div>
   </div>
 </div>
 
@@ -1039,6 +1490,123 @@ function removeGuest(ni, ri, pid) {
   renderRooms(); renderSummary();
 }
 
+function randomizeRooms() {
+  if (new Date() > new Date('2026-04-09')) {
+    showToast('Bidding closed! 🔒');
+    return;
+  }
+  
+  if(!confirm('Randomize all room assignments for all days? 🎲')) return;
+
+  roomAssignments = {};
+  nightDates.forEach((nd, ni) => {
+    const present = people.filter(p => p.arrive <= nd.day && p.depart > nd.day);
+    // Shuffle
+    for (let i = present.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [present[i], present[j]] = [present[j], present[i]];
+    }
+    
+    // Group by gender to maintain basic rule (can be removed if mixed is allowed)
+    const males = present.filter(p => p.gender === 'male');
+    const females = present.filter(p => p.gender === 'female');
+    
+    const rooms = [];
+    
+    // Assign males
+    for (let i = 0; i < males.length; i += 2) {
+      rooms.push(i + 1 < males.length
+        ? { guests: [males[i].id, males[i+1].id], gender: 'male' }
+        : { guests: [males[i].id], gender: 'male' });
+    }
+    
+    // Assign females
+    for (let i = 0; i < females.length; i += 2) {
+      rooms.push(i + 1 < females.length
+        ? { guests: [females[i].id, females[i+1].id], gender: 'female' }
+        : { guests: [females[i].id], gender: 'female' });
+    }
+    
+    roomAssignments[ni] = rooms;
+  });
+  
+  renderRooms();
+  renderSummary();
+  saveData(); // Save random results
+  showToast('Randomized! 🎲');
+}
+
+// ═══ Drink Bid ═══
+function rollDrinkBid() {
+  const drinks = ['Shot of Tequila', 'Shot of Vodka', 'Beer (Glass)', 'Beer (Bottle)', 'Cocktail', 'Water (Lucky!)'];
+  const multipliers = ['x1', 'x2', 'x3', 'x1.5', 'HALF'];
+  const dares = [
+    'Run around the room twice',
+    'Do 10 pushups',
+    'Send a voice message to ex',
+    'Dance for 1 min without music',
+    'Let someone post on your social media',
+    'Eat a spoon of spicy sauce',
+    'No phone for 1 hour',
+    'Sing a song loudly'
+  ];
+  
+  const resultEl = document.getElementById('bidResult');
+  const dareEl = document.getElementById('bidDare');
+  let count = 0;
+  
+  dareEl.classList.remove('show');
+  
+  // Animation
+  const interval = setInterval(() => {
+    const d = drinks[Math.floor(Math.random() * drinks.length)];
+    const m = multipliers[Math.floor(Math.random() * multipliers.length)];
+    resultEl.innerHTML = `${d} <span class="bid-multiplier">${m}</span>`;
+    count++;
+    if (count > 20) {
+      clearInterval(interval);
+      // Final result
+      const finalD = drinks[Math.floor(Math.random() * drinks.length)];
+      const finalM = multipliers[Math.floor(Math.random() * multipliers.length)];
+      const finalDare = dares[Math.floor(Math.random() * dares.length)];
+      
+      resultEl.innerHTML = `${finalD} <span class="bid-multiplier">${finalM}</span>`;
+      dareEl.textContent = `🔥 Dare: ${finalDare}`;
+      dareEl.classList.add('show');
+      
+      // Sound effect (simple beep using AudioContext)
+      if(audioCtx) {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.3);
+        g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+  }, 80);
+}
+
+function rollCompanion() {
+  const others = people.filter(p => true); // Can filter out self if we had user login
+  const resEl = document.getElementById('compResult');
+  let count = 0;
+  const interval = setInterval(() => {
+    const p = others[Math.floor(Math.random() * others.length)];
+    resEl.textContent = p.name;
+    count++;
+    if (count > 15) {
+      clearInterval(interval);
+      const finalP = others[Math.floor(Math.random() * others.length)];
+      resEl.textContent = "🥂 " + finalP.name;
+    }
+  }, 100);
+}
+
 // ═══ Drag & Drop ═══
 let dragPerson = null, dragNight = null, dragRoom = null;
 
@@ -1049,6 +1617,14 @@ function setupDragDrop() {
       dragNight = parseInt(e.target.dataset.night);
       const rc = e.target.closest('.room-card');
       dragRoom = rc ? parseInt(rc.dataset.room) : null;
+      
+      // CRITICAL FIX FOR MOBILE: setData is required
+      e.dataTransfer.setData('text/plain', JSON.stringify({
+        person: dragPerson,
+        night: dragNight,
+        room: dragRoom
+      }));
+
       e.target.style.opacity = '0.4';
       e.dataTransfer.effectAllowed = 'move';
     });
@@ -1062,20 +1638,46 @@ function setupDragDrop() {
 function handleDrop(e, ni, ri) {
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
-  if (!dragPerson || dragNight !== ni) return;
-  const person = people.find(p => p.id === dragPerson);
+  
+  // Try getting data from transfer first (mobile fix)
+  let pId = dragPerson;
+  let nId = dragNight;
+  let rId = dragRoom;
+
+  try {
+    const data = e.dataTransfer.getData('text/plain');
+    if (data) {
+      const parsed = JSON.parse(data);
+      if (parsed.person) {
+        pId = parsed.person;
+        nId = parsed.night;
+        rId = parsed.room;
+      }
+    }
+  } catch(err) {}
+
+  if (!pId || nId !== ni) return;
+  
+  if (new Date() > new Date('2026-04-09')) {
+    showToast('Bidding closed! 🔒');
+    return;
+  }
+  const person = people.find(p => p.id === pId);
   const target = roomAssignments[ni][ri];
   if (target.gender !== person.gender) { showToast('男女不能混住哦！🚫'); return; }
-  if (dragRoom !== null) {
-    const src = roomAssignments[ni][dragRoom];
-    src.guests = src.guests.filter(g => g !== dragPerson);
+  
+  if (rId !== null && rId !== undefined) {
+    const src = roomAssignments[ni][rId];
+    src.guests = src.guests.filter(g => g !== pId);
     if (src.guests.length === 0) {
-      roomAssignments[ni].splice(dragRoom, 1);
-      if (ri > dragRoom) ri--;
+      roomAssignments[ni].splice(rId, 1);
+      if (ri > rId) ri--;
     }
   }
-  if (!roomAssignments[ni][ri].guests.includes(dragPerson)) roomAssignments[ni][ri].guests.push(dragPerson);
+  if (!roomAssignments[ni][ri].guests.includes(pId)) roomAssignments[ni][ri].guests.push(pId);
+  
   dragPerson = null; dragRoom = null;
+  saveData(); // Save room changes
   renderRooms(); renderSummary();
 }
 
@@ -1114,6 +1716,7 @@ function showCostBreakdown() {
       </div>
     </div>
   `).join('');
+  document.querySelector('#modalOverlay h2').textContent = '每人费用明细';
   document.getElementById('modalOverlay').classList.add('show');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
@@ -1135,329 +1738,6 @@ function createDrops() {
   }
 }
 
-// ═══ Music ═══
-let audioCtx, isPlaying = false;
-
-function createSynthMusic() {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-  // Master gain with slight fade in
-  const masterGain = audioCtx.createGain();
-  masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-  masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 2);
-  masterGain.connect(audioCtx.destination);
-
-  // Compressor
-  const comp = audioCtx.createDynamicsCompressor();
-  comp.threshold.value = -18;
-  comp.ratio.value = 6;
-  comp.attack.value = 0.003;
-  comp.release.value = 0.1;
-  comp.connect(masterGain);
-
-  // Reverb (simple convolver)
-  const reverbGain = audioCtx.createGain();
-  reverbGain.gain.value = 0.15;
-  reverbGain.connect(comp);
-  const reverbLen = audioCtx.sampleRate * 1.5;
-  const reverbBuf = audioCtx.createBuffer(2, reverbLen, audioCtx.sampleRate);
-  for (let ch = 0; ch < 2; ch++) {
-    const d = reverbBuf.getChannelData(ch);
-    for (let i = 0; i < reverbLen; i++) {
-      d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.4));
-    }
-  }
-  const reverb = audioCtx.createConvolver();
-  reverb.buffer = reverbBuf;
-  reverb.connect(reverbGain);
-
-  // ── TECHNO KICK (punchy 909-style) ──
-  function playKick(time) {
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(180, time);
-    osc.frequency.exponentialRampToValueAtTime(35, time + 0.08);
-    osc.frequency.exponentialRampToValueAtTime(28, time + 0.25);
-    g.gain.setValueAtTime(1, time);
-    g.gain.setValueAtTime(0.7, time + 0.05);
-    g.gain.exponentialRampToValueAtTime(0.01, time + 0.35);
-    osc.connect(g);
-    g.connect(comp);
-    osc.start(time);
-    osc.stop(time + 0.35);
-
-    // Kick click layer
-    const click = audioCtx.createOscillator();
-    const cg = audioCtx.createGain();
-    click.type = 'triangle';
-    click.frequency.setValueAtTime(1200, time);
-    click.frequency.exponentialRampToValueAtTime(100, time + 0.02);
-    cg.gain.setValueAtTime(0.4, time);
-    cg.gain.exponentialRampToValueAtTime(0.01, time + 0.03);
-    click.connect(cg);
-    cg.connect(comp);
-    click.start(time);
-    click.stop(time + 0.04);
-  }
-
-  // ── CLOSED HI-HAT (tight, metallic) ──
-  function playCH(time, vol = 0.12) {
-    const bufSz = audioCtx.sampleRate * 0.04;
-    const buf = audioCtx.createBuffer(1, bufSz, audioCtx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < bufSz; i++) d[i] = Math.random() * 2 - 1;
-    const src = audioCtx.createBufferSource();
-    src.buffer = buf;
-    const bp = audioCtx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = 10000;
-    bp.Q.value = 1.5;
-    const hp = audioCtx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 7000;
-    const g = audioCtx.createGain();
-    g.gain.setValueAtTime(vol, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
-    src.connect(bp);
-    bp.connect(hp);
-    hp.connect(g);
-    g.connect(comp);
-    src.start(time);
-    src.stop(time + 0.05);
-  }
-
-  // ── OPEN HI-HAT ──
-  function playOH(time) {
-    const bufSz = audioCtx.sampleRate * 0.2;
-    const buf = audioCtx.createBuffer(1, bufSz, audioCtx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < bufSz; i++) d[i] = Math.random() * 2 - 1;
-    const src = audioCtx.createBufferSource();
-    src.buffer = buf;
-    const hp = audioCtx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 6000;
-    const g = audioCtx.createGain();
-    g.gain.setValueAtTime(0.1, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
-    src.connect(hp);
-    hp.connect(g);
-    g.connect(comp);
-    g.connect(reverb);
-    src.start(time);
-    src.stop(time + 0.2);
-  }
-
-  // ── CLAP (layered noise) ──
-  function playClap(time) {
-    for (let i = 0; i < 3; i++) {
-      const t = time + i * 0.01;
-      const bufSz = audioCtx.sampleRate * 0.06;
-      const buf = audioCtx.createBuffer(1, bufSz, audioCtx.sampleRate);
-      const d = buf.getChannelData(0);
-      for (let j = 0; j < bufSz; j++) d[j] = Math.random() * 2 - 1;
-      const src = audioCtx.createBufferSource();
-      src.buffer = buf;
-      const bp = audioCtx.createBiquadFilter();
-      bp.type = 'bandpass';
-      bp.frequency.value = 2000;
-      bp.Q.value = 0.5;
-      const g = audioCtx.createGain();
-      g.gain.setValueAtTime(i === 2 ? 0.2 : 0.1, t);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
-      src.connect(bp);
-      bp.connect(g);
-      g.connect(comp);
-      g.connect(reverb);
-      src.start(t);
-      src.stop(t + 0.1);
-    }
-  }
-
-  // ── ACID BASS (303-style with filter sweep) ──
-  function playAcidBass(time, freq, dur, filterStart, filterEnd) {
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(freq, time);
-
-    const lp = audioCtx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.setValueAtTime(filterStart, time);
-    lp.frequency.exponentialRampToValueAtTime(filterEnd, time + dur * 0.7);
-    lp.Q.value = 12; // resonance — key to acid sound
-
-    const dist = audioCtx.createWaveShaper();
-    const curve = new Float32Array(256);
-    for (let i = 0; i < 256; i++) {
-      const x = (i / 128) - 1;
-      curve[i] = Math.tanh(x * 2);
-    }
-    dist.curve = curve;
-
-    g.gain.setValueAtTime(0.25, time);
-    g.gain.setValueAtTime(0.25, time + dur * 0.8);
-    g.gain.exponentialRampToValueAtTime(0.01, time + dur);
-
-    osc.connect(lp);
-    lp.connect(dist);
-    dist.connect(g);
-    g.connect(comp);
-    osc.start(time);
-    osc.stop(time + dur);
-  }
-
-  // ── DARK PAD (techno atmosphere) ──
-  function playDarkPad(time, freq, dur) {
-    ['sawtooth', 'square'].forEach((type, idx) => {
-      const osc = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-      osc.type = type;
-      osc.frequency.value = freq + (idx * 0.8); // slight detune
-      const lp = audioCtx.createBiquadFilter();
-      lp.type = 'lowpass';
-      lp.frequency.value = 600;
-      g.gain.setValueAtTime(0, time);
-      g.gain.linearRampToValueAtTime(0.025, time + dur * 0.3);
-      g.gain.linearRampToValueAtTime(0.025, time + dur * 0.7);
-      g.gain.linearRampToValueAtTime(0, time + dur);
-      osc.connect(lp);
-      lp.connect(g);
-      g.connect(comp);
-      g.connect(reverb);
-      osc.start(time);
-      osc.stop(time + dur + 0.1);
-    });
-  }
-
-  // ── PERC (metallic techno hit) ──
-  function playPerc(time) {
-    const osc = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(800, time);
-    osc.frequency.exponentialRampToValueAtTime(200, time + 0.06);
-    g.gain.setValueAtTime(0.12, time);
-    g.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
-    osc.connect(g);
-    g.connect(comp);
-    g.connect(reverb);
-    osc.start(time);
-    osc.stop(time + 0.1);
-  }
-
-  // ═══ PATTERN ═══
-  const bpm = 132; // classic techno tempo
-  const beatDur = 60 / bpm;
-  const sixteenth = beatDur / 4;
-  const barDur = beatDur * 4;
-
-  // Acid bass pattern: minor key, hypnotic
-  // A1=55, C2=65.41, D2=73.42, E2=82.41, G1=49
-  const bassPatterns = [
-    // [step (0-15), freq, duration_in_sixteenths, filterStart, filterEnd]
-    [ [0,55,2,2000,300], [3,55,1,1500,200], [4,65.41,2,2500,300], [8,55,2,1800,250], [10,73.42,1,3000,200], [12,49,3,2000,150] ],
-    [ [0,55,3,2200,200], [4,82.41,1,3500,300], [6,65.41,2,1500,200], [8,55,1,2000,300], [10,55,2,1800,150], [13,73.42,2,2800,200] ],
-    [ [0,49,2,1800,250], [2,55,1,2500,200], [4,65.41,3,2000,150], [8,73.42,2,3000,200], [11,55,1,1500,300], [12,49,3,2200,180] ],
-    [ [0,55,2,2800,200], [3,82.41,2,3500,150], [6,73.42,1,2000,300], [8,55,3,1800,200], [12,65.41,2,2500,250], [14,55,1,2000,300] ],
-  ];
-
-  // Hi-hat patterns (velocity per 16th note, 0 = rest)
-  const hatPatterns = [
-    [0.12,0,0.06,0, 0.12,0,0.06,0.04, 0.12,0,0.06,0, 0.12,0,0.06,0.04],
-    [0.12,0,0.06,0.03, 0.12,0,0.08,0, 0.12,0,0.06,0.03, 0.12,0.04,0.08,0],
-  ];
-
-  let currentBar = 0;
-
-  function scheduleBar(startTime) {
-    const barInPhrase = currentBar % 16;
-    const patIdx = currentBar % 4;
-
-    // ── KICK: four-on-the-floor (the soul of techno) ──
-    for (let b = 0; b < 4; b++) {
-      playKick(startTime + b * beatDur);
-    }
-
-    // ── CLAP on 2 and 4 ──
-    playClap(startTime + beatDur);
-    playClap(startTime + beatDur * 3);
-
-    // ── HI-HATS (16th note pattern) ──
-    const hPat = hatPatterns[patIdx % hatPatterns.length];
-    for (let s = 0; s < 16; s++) {
-      if (hPat[s] > 0) playCH(startTime + s * sixteenth, hPat[s]);
-    }
-
-    // ── OPEN HAT on offbeats (every other bar) ──
-    if (barInPhrase % 2 === 1) {
-      playOH(startTime + beatDur * 0.5);
-      playOH(startTime + beatDur * 2.5);
-    }
-
-    // ── PERC (variation) ──
-    if (barInPhrase % 4 >= 2) {
-      playPerc(startTime + beatDur * 1.75);
-      playPerc(startTime + beatDur * 3.75);
-    }
-
-    // ── ACID BASS ──
-    const bPat = bassPatterns[patIdx];
-    bPat.forEach(([step, freq, durSteps, fStart, fEnd]) => {
-      playAcidBass(startTime + step * sixteenth, freq, durSteps * sixteenth, fStart, fEnd);
-    });
-
-    // ── DARK PAD (every 4 bars, different notes) ──
-    if (barInPhrase % 4 === 0) {
-      const padFreqs = [110, 130.81, 98, 116.54];
-      playDarkPad(startTime, padFreqs[patIdx], barDur * 4);
-    }
-
-    currentBar++;
-  }
-
-  let nextBarTime = audioCtx.currentTime + 0.1;
-  const intervalId = setInterval(() => {
-    if (!isPlaying) { clearInterval(intervalId); return; }
-    while (nextBarTime < audioCtx.currentTime + 0.5) {
-      scheduleBar(nextBarTime);
-      nextBarTime += barDur;
-    }
-  }, 100);
-
-  return intervalId;
-}
-
-let musicInterval = null;
-
-function toggleMusic() {
-  const btn = document.getElementById('musicBtn');
-  if (isPlaying) {
-    isPlaying = false;
-    btn.classList.remove('playing');
-    if (audioCtx) { audioCtx.close(); audioCtx = null; }
-  } else {
-    isPlaying = true;
-    btn.classList.add('playing');
-    musicInterval = createSynthMusic();
-  }
-}
-
-// ═══ AUTO-PLAY: start music on first user interaction ═══
-let autoStarted = false;
-function autoStartMusic() {
-  if (autoStarted) return;
-  autoStarted = true;
-  // Small delay so the interaction completes first
-  setTimeout(() => {
-    if (!isPlaying) toggleMusic();
-  }, 300);
-  document.removeEventListener('click', autoStartMusic);
-  document.removeEventListener('touchstart', autoStartMusic);
-}
-document.addEventListener('click', autoStartMusic);
-document.addEventListener('touchstart', autoStartMusic);
 
 // ═══ Mouse-Reactive Gradient Background ═══
 const colorZones = [
@@ -1534,15 +1814,235 @@ document.addEventListener('touchmove', (e) => {
 
 requestAnimationFrame(updateBackground);
 
-// ═══ Init ═══
-initRoomAssignments();
-renderHotels();
-renderPeople();
-renderNightTabs();
-renderRooms();
-renderSummary();
-createDrops();
+// ═══ Split Money ═══
+let expenses = [];
+
+function renderExpenses() {
+  const el = document.getElementById('expenseList');
+  if (expenses.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:12px">No expenses yet</div>';
+    return;
+  }
+  el.innerHTML = expenses.map((ex, i) => {
+    const payer = people.find(p => p.id === ex.payer);
+    return `
+    <div class="expense-item">
+      <div class="p-avatar ${payer.gender}" style="width:32px;height:32px;font-size:12px;margin-right:12px">${payer.name[0]}</div>
+      <div class="ex-info">
+        <div class="ex-desc">${ex.desc || 'Expense'}</div>
+        <div class="ex-meta">Paid by ${payer.name} · For ${ex.for.length === people.length ? 'All' : ex.for.length + ' people'}</div>
+      </div>
+      <div class="ex-amount">$${ex.amount}</div>
+      <button class="ex-delete" onclick="deleteExpense(${i})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function openExpenseModal() {
+  const sel = document.getElementById('exPayer');
+  sel.innerHTML = people.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+  
+  const ben = document.getElementById('exBen');
+  ben.innerHTML = people.map(p => 
+    `<div class="ben-chip selected" onclick="this.classList.toggle('selected')" data-id="${p.id}">${p.name}</div>`
+  ).join('');
+
+  document.getElementById('exAmount').value = '';
+  document.getElementById('exDesc').value = '';
+  
+  document.getElementById('expenseModal').classList.add('show');
+}
+
+function closeExpenseModal() {
+  document.getElementById('expenseModal').classList.remove('show');
+}
+
+function saveExpense() {
+  const payer = document.getElementById('exPayer').value;
+  const amount = parseFloat(document.getElementById('exAmount').value);
+  const desc = document.getElementById('exDesc').value;
+  
+  if (!amount || amount <= 0) { showToast('Amount required!'); return; }
+  
+  const benChips = document.querySelectorAll('#exBen .ben-chip.selected');
+  const beneficiaries = Array.from(benChips).map(c => c.dataset.id);
+  
+  if (beneficiaries.length === 0) { showToast('Select at least 1 person!'); return; }
+  
+  expenses.push({
+    payer,
+    amount,
+    desc,
+    for: beneficiaries,
+    date: new Date()
+  });
+  
+  saveData(); // Save to local storage
+  renderExpenses();
+  closeExpenseModal();
+  showToast('Saved! 💰');
+}
+
+function deleteExpense(index) {
+  if(confirm('Delete this expense?')) {
+    expenses.splice(index, 1);
+    saveData(); // Save to local storage
+    renderExpenses();
+  }
+}
+
+// ═══ Persistence ═══
+  // Firebase configuration
+  const firebaseConfig = { 
+    apiKey: "AIzaSyAr1PE411ojvvv-gi43a_LI_-VANYypWus", 
+    authDomain: "bkktrip-496bc.firebaseapp.com", 
+    databaseURL: "https://bkktrip-496bc-default-rtdb.asia-southeast1.firebasedatabase.app", 
+    projectId: "bkktrip-496bc", 
+    storageBucket: "bkktrip-496bc.firebasestorage.app", 
+    messagingSenderId: "373398465392", 
+    appId: "1:373398465392:web:009c1542cba5692e9cbdb5", 
+    measurementId: "G-2TS49M5XJQ" 
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function saveData() {
+    // Save to Firebase
+    db.ref('songkran_data').set({
+      expenses: expenses,
+      roomAssignments: roomAssignments,
+      updatedAt: new Date().toISOString()
+    }).catch(error => {
+      console.error("Error saving data:", error);
+      showToast('Error saving data! 🔴');
+    });
+  }
+
+  function loadData() {
+    // Listen for data changes from Firebase
+    const dataRef = db.ref('songkran_data');
+    dataRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        if (data.expenses) {
+          expenses = data.expenses;
+          renderExpenses();
+        }
+        if (data.roomAssignments) {
+          roomAssignments = data.roomAssignments;
+          renderRooms();
+          renderSummary();
+        }
+      } else {
+        // No data in cloud yet, use default
+        initRoomAssignments();
+        saveData(); // Push initial state
+      }
+    });
+  }
+
+function showSettlement() {
+  const balances = {};
+  people.forEach(p => balances[p.id] = 0);
+  
+  expenses.forEach(ex => {
+    const share = ex.amount / ex.for.length;
+    balances[ex.payer] += ex.amount;
+    ex.for.forEach(uid => {
+      balances[uid] -= share;
+    });
+  });
+  
+  const debtors = [];
+  const creditors = [];
+  
+  Object.entries(balances).forEach(([id, bal]) => {
+    if (bal < -0.01) debtors.push({ id, amount: bal });
+    else if (bal > 0.01) creditors.push({ id, amount: bal });
+  });
+  
+  debtors.sort((a,b) => a.amount - b.amount);
+  creditors.sort((a,b) => b.amount - a.amount);
+  
+  const transfers = [];
+  let i = 0, j = 0;
+  
+  while (i < debtors.length && j < creditors.length) {
+    const debt = debtors[i];
+    const credit = creditors[j];
+    const amount = Math.min(Math.abs(debt.amount), credit.amount);
+    
+    transfers.push({ from: debt.id, to: credit.id, amount: amount });
+    
+    debt.amount += amount;
+    credit.amount -= amount;
+    
+    if (Math.abs(debt.amount) < 0.01) i++;
+    if (credit.amount < 0.01) j++;
+  }
+  
+  const html = transfers.length === 0 
+    ? '<div style="text-align:center;padding:20px">No debts! 🎉</div>'
+    : transfers.map(t => {
+        const from = people.find(p => p.id === t.from);
+        const to = people.find(p => p.id === t.to);
+        return `
+        <div class="settle-row">
+          <div style="font-weight:600;width:60px">${from.name}</div>
+          <div class="settle-arrow">➜</div>
+          <div style="font-weight:600;width:60px">${to.name}</div>
+          <div class="settle-amt">$${t.amount.toFixed(2)}</div>
+        </div>`;
+      }).join('');
+      
+  document.querySelector('#modalOverlay h2').textContent = '结算方案 (Settlement)';
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+  // ═══ Init ═══
+  // Note: loadData() is async now (Firebase listener), so we rely on its callback to render initial data
+  // But we still render the static UI first
+  renderHotels();
+  renderPeople();
+  renderNightTabs();
+  
+  // Start listening for data
+  loadData(); 
+
+  createDrops();
+
+// ═══ Festival Radar ═══
+function switchFestTab(fest, index) {
+  // Update Tabs
+  const tabs = document.querySelectorAll(`#${fest}Tabs .f-tab`);
+  tabs.forEach((t, i) => t.classList.toggle('active', i === index));
+  
+  // Update Content
+  const lists = document.querySelectorAll(`.${fest} .dj-list`);
+  lists.forEach((l, i) => l.classList.toggle('active', i === index));
+}
 </script>
 
+<!-- Mobile Drag Drop Polyfill -->
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour.min.js"></script>
+<script>
+  // Fix for mobile drag and drop
+  var polyfillOptions = {
+    // use this to make use of the scroll behaviour
+    dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+  };
+  MobileDragDrop.polyfill(polyfillOptions);
+
+  // Fix for iOS scrolling while dragging
+  document.addEventListener('touchmove', function(e) {
+      if (e.target.classList.contains('dnd-poly-drag-image') || e.target.closest('.dnd-poly-drag-image')) {
+          e.preventDefault();
+      }
+  }, { passive: false });
+</script>
 </body>
 </html>
