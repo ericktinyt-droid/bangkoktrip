@@ -61,54 +61,50 @@
   }
   @keyframes shine { to { background-position: 200% center; } }
 
-  .hero-tag { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--text-dim); display: block; margin-top: 10px; }
-  .hero-date { display: inline-block; margin-top: 25px; padding: 8px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 50px; color: var(--neon-yellow); font-size: 0.85rem; }
-
   .section-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 700; margin: 40px 0 10px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
   .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--glass-border), transparent); }
   .section-sub { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 25px; }
 
-  /* 酒店卡片 */
+  /* 酒店展示逻辑修复 */
   .hotel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
   .hotel-card {
     background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 20px;
-    padding: 20px; backdrop-filter: blur(10px); transition: 0.3s; position: relative; overflow: hidden;
+    padding: 20px; backdrop-filter: blur(10px); transition: 0.3s; position: relative; overflow: hidden; cursor: pointer;
   }
-  .hotel-card.selected { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,240,255,0.15); }
-  .price-tag { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--neon-yellow); }
+  .hotel-card:hover { background: var(--bg-card-hover); border-color: rgba(255,255,255,0.3); }
+  .hotel-card.selected { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,240,255,0.2); }
+  .hotel-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
+  .hotel-meta { font-size: 0.75rem; color: var(--text-dim); display: flex; gap: 15px; margin-bottom: 12px; }
+  .hotel-desc { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 15px; min-height: 2.4em; }
+  .price-tag { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--neon-yellow); font-weight: 800; }
 
-  /* 房间与人员 */
+  /* 房间分配区域 */
   .room-block { background: rgba(255,255,255,0.03); border: 1px dashed var(--glass-border); border-radius: 15px; padding: 20px; margin-bottom: 15px; }
-  .room-slots { display: flex; flex-wrap: wrap; gap: 10px; min-height: 50px; align-items: center; }
+  .room-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 10px; color: var(--text-dim); font-family: 'Orbitron'; }
+  .room-slots { display: flex; flex-wrap: wrap; gap: 10px; min-height: 50px; }
   
   .person-chip {
     padding: 8px 16px; border-radius: 12px; background: rgba(255,255,255,0.08);
     border: 1px solid var(--glass-border); font-size: 0.85rem; cursor: pointer;
-    display: flex; align-items: center; gap: 8px; transition: 0.2s; user-select: none;
+    display: flex; align-items: center; gap: 8px; transition: 0.2s;
   }
-  /* 手机选中态发光 */
-  .person-chip.active-touch {
-    border-color: var(--neon-cyan) !important;
-    box-shadow: 0 0 15px var(--neon-cyan);
-    transform: scale(1.05);
-  }
-  .remove-btn { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 10px; }
-
-  /* 记账模块 */
-  .exp-input { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; padding: 12px; border-radius: 10px; width: 100%; outline: none; }
-  .part-badge { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 1px solid transparent; }
-  .part-badge:has(input:checked) { background: rgba(0, 240, 255, 0.1); border-color: var(--neon-cyan); color: var(--neon-cyan); }
-  .part-badge input { display: none; }
+  .person-chip.active-touch { border-color: var(--neon-cyan) !important; box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.05); }
+  .remove-btn { width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 9px; }
 
   /* 底部栏 */
   .summary-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 20px; background: rgba(10, 0, 20, 0.9); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); z-index: 100; }
-  .summary-btn { background: white; color: black; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; font-family: 'Orbitron'; cursor: pointer; }
+  .summary-btn { background: white; color: black; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 800; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s; }
+  .summary-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
 
-  /* 弹窗 */
+  /* 记账模块 */
+  .exp-input { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; padding: 12px; border-radius: 10px; width: 100%; margin-bottom: 10px; outline: none; }
+  .part-badge { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 11px; cursor: pointer; border: 1px solid transparent; }
+  .part-badge:has(input:checked) { background: rgba(0, 240, 255, 0.1); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+  .part-badge input { display: none; }
+
+  /* 结算弹窗 */
   #modalOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
-  .modal-content { background: #150025; border: 1px solid var(--neon-cyan); border-radius: 25px; width: 100%; max-width: 500px; padding: 30px; position: relative; }
-  
-  #toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--neon-magenta); color: white; padding: 10px 20px; border-radius: 50px; z-index: 2000; display: none; font-weight: bold; }
+  .modal-content { background: #150025; border: 1px solid var(--neon-cyan); border-radius: 25px; width: 100%; max-width: 500px; padding: 30px; position: relative; max-height: 85vh; overflow-y: auto; }
 </style>
 </head>
 <body>
@@ -122,40 +118,41 @@
 <div class="container">
   <header>
     <div class="logo-area"><span style="font-size: 2rem;">💦</span><h1 class="logo-text">来泼水吧</h1></div>
-    <span class="hero-tag">Bangkok Songkran 2026 · EDC Edition</span>
-    <div class="hero-date">📅 APR 10 FRI — APR 14 TUE</div>
+    <div style="color: var(--neon-yellow); font-family: 'Orbitron'; font-size: 0.9rem; margin-top: 15px;">📅 APR 10 FRI — APR 14 TUE, 2026</div>
   </header>
 
   <div class="section-title">Stage Select</div>
+  <div class="section-sub">选择大本营，费用将自动计算至个人账单</div>
   <div class="hotel-grid" id="hotelGrid"></div>
 
   <div class="section-title">Lineup</div>
-  <div class="section-sub">手机端：点击名字再点击房间即可分配</div>
+  <div class="section-sub">点击名字后，再点击下方房间即可快速分配</div>
   <div id="unassignedArea" class="room-slots room-block" style="min-height: 80px; border-style: solid;"></div>
 
   <div class="section-title">Room Setup</div>
-  <div class="room-container" id="roomContainer"></div>
-  <button class="add-room-btn" onclick="addNewRoom()" style="width: 100%; padding: 12px; background: transparent; border: 1px dashed var(--glass-border); color: var(--text-dim); border-radius: 12px; cursor: pointer;">+ ADD NEW ROOM</button>
+  <div id="roomContainer"></div>
+  <button onclick="addNewRoom()" style="width: 100%; padding: 12px; background: transparent; border: 1px dashed var(--glass-border); color: var(--text-dim); border-radius: 12px; cursor: pointer;">+ ADD NEW ROOM</button>
 
   <div class="section-title">Credit Radar</div>
-  <div class="section-sub">记账与分摊</div>
-  <div class="hotel-card" style="padding: 20px; margin-bottom: 120px;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-      <input type="text" id="expDesc" class="exp-input" placeholder="项目: 如打车">
-      <input type="number" id="expAmount" class="exp-input" placeholder="金额 $">
+  <div class="section-sub">记录旅行中的额外支出（如打车、聚餐）</div>
+  <div class="room-block" style="border-style: solid; margin-bottom: 120px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+      <input type="text" id="expDesc" class="exp-input" placeholder="支出项: 如 S2O 门票" style="margin-bottom:0">
+      <input type="number" id="expAmount" class="exp-input" placeholder="金额 $" style="margin-bottom:0">
     </div>
-    <select id="expPayer" class="exp-input" style="margin-bottom: 15px;"></select>
-    <div id="expParticipants" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;"></div>
-    <button onclick="addExpense()" class="summary-btn" style="width: 100%; background: var(--neon-cyan);">记录支出</button>
-    <div id="expenseList" style="margin-top: 20px;"></div>
+    <select id="expPayer" class="exp-input" style="margin-top:10px"></select>
+    <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">谁参与了分摊？</div>
+    <div id="expParticipants" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;"></div>
+    <button onclick="addExpense()" class="summary-btn" style="width: 100%; background: var(--neon-cyan);">RECORD EXPENSE</button>
+    <div id="expenseList" style="margin-top: 25px;"></div>
   </div>
 </div>
 
 <div class="summary-bar">
   <div style="max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
     <div>
-      <div style="font-size: 10px; color: var(--text-dim);">TOTAL COST</div>
-      <div id="totalDisplay" style="font-family: Orbitron; font-size: 1.4rem; color: var(--neon-cyan);">$ 0</div>
+      <div style="font-size: 10px; color: var(--text-dim);">ESTIMATED TOTAL</div>
+      <div id="totalDisplay" style="font-family: Orbitron; font-size: 1.4rem; color: var(--neon-cyan); font-weight: 800;">$ 0</div>
     </div>
     <button class="summary-btn" onclick="showCostBreakdown()">💰 Settlement</button>
   </div>
@@ -163,21 +160,22 @@
 
 <div id="modalOverlay">
   <div class="modal-content">
-    <h2 style="font-family: Orbitron; color: var(--neon-cyan); margin-top: 0;">费用明细</h2>
+    <h2 style="font-family: Orbitron; color: var(--neon-cyan); margin-top: 0;">Settlement Center</h2>
+    <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 20px;">计算结果 = 房费分摊 + 个人记账支出总和</div>
     <div id="breakdownList"></div>
-    <button class="summary-btn" style="width: 100%; margin-top: 20px;" onclick="closeModal()">OK</button>
+    <button class="summary-btn" style="width: 100%; margin-top: 25px;" onclick="closeModal()">GOT IT</button>
   </div>
 </div>
 
-<div id="toast"></div>
-
 <script>
-// --- Data ---
+// ═══ 完整酒店数据恢复 ═══
 const hotels = [
-  { id: 'h1', name: 'W Bangkok', area: 'Silom', price: 1250 },
-  { id: 'h2', name: 'The Standard', area: 'Mahanakhon', price: 1400 },
-  { id: 'h3', name: 'SO Bangkok', area: 'Lumpini', price: 1100 }
+  { id: 'h1', name: 'W Bangkok', area: 'Silom', rating: '5-Star', price: 1250, desc: 'EDC期间极佳地理位置' },
+  { id: 'h2', name: 'The Standard', area: 'Mahanakhon', rating: 'Trendy', price: 1400, desc: '设计感天花板，就在旁边' },
+  { id: 'h3', name: 'SO Bangkok', area: 'Lumpini', rating: 'Infinity Pool', price: 1100, desc: '经典的无边泳池派对酒店' }
 ];
+
+// ═══ 完整人员数据 ═══
 const people = [
   { id: 'p1', name: 'Erick', color: 'var(--neon-cyan)' },
   { id: 'p2', name: 'Member 2', color: 'var(--neon-magenta)' },
@@ -187,110 +185,87 @@ const people = [
   { id: 'p6', name: 'Member 6', color: 'var(--neon-orange)' },
   { id: 'p7', name: 'Member 7', color: 'var(--neon-blue)' },
   { id: 'p8', name: 'Member 8', color: 'var(--neon-purple)' },
-  { id: 'p9', name: 'Member 9', color: '#fff' }
+  { id: 'p9', name: 'Member 9', color: '#ffffff' }
 ];
 
-// --- State ---
 let selectedHotelId = 'h1';
 let rooms = [{ id: 'r1', occupants: ['p1'] }];
 let unassigned = people.map(p => p.id).filter(id => id !== 'p1');
-let expenses = JSON.parse(localStorage.getItem('bk_exp_v2')) || [];
-let selectedPersonId = null; // 手机端点击分配逻辑
+let expenses = JSON.parse(localStorage.getItem('bk_exp_final_v3')) || [];
+let selectedPersonId = null;
 
-function init() {
-  renderHotels();
-  renderUnassigned();
-  renderRooms();
-  initExpenseUI();
-  renderExpenses();
-  updateTotal();
+// ═══ 背景动态逻辑恢复 ═══
+let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0, hue = 180, currentHue = 180;
+function updateBackground() {
+  mouseX += (targetX - mouseX) * 0.05; mouseY += (targetY - mouseY) * 0.05;
+  currentHue += (hue - currentHue) * 0.05;
+  const h = currentHue;
+  const spot = document.getElementById('cursorSpot');
+  if(spot) { spot.style.left = (mouseX-250)+'px'; spot.style.top = (mouseY-250)+'px'; spot.style.background = `hsl(${h}, 100%, 50%)`; }
+  document.getElementById('glowPrimary').style.background = `hsl(${(h+60)%360}, 90%, 45%)`;
+  document.getElementById('glowSecondary').style.background = `hsl(${(h+180)%360}, 85%, 50%)`;
   requestAnimationFrame(updateBackground);
 }
 
-// --- Render Logic ---
+// ═══ 渲染引擎 ═══
+function renderAll() {
+  renderHotels();
+  renderUnassigned();
+  renderRooms();
+  renderExpenses();
+  updateTotal();
+}
+
 function renderHotels() {
   document.getElementById('hotelGrid').innerHTML = hotels.map(h => `
-    <div class="hotel-card ${h.id === selectedHotelId ? 'selected' : ''}" onclick="selectHotel('${h.id}')">
-      <div style="font-weight:bold;">${h.name}</div>
+    <div class="hotel-card ${h.id === selectedHotelId ? 'selected' : ''}" onclick="selectedHotelId='${h.id}'; renderAll();">
+      <div class="hotel-name">${h.name}</div>
+      <div class="hotel-meta"><span>📍 ${h.area}</span><span>✨ ${h.rating}</span></div>
+      <div class="hotel-desc">${h.desc}</div>
       <div class="price-tag">$${h.price}</div>
     </div>
   `).join('');
 }
 
-function selectHotel(id) { selectedHotelId = id; renderHotels(); updateTotal(); }
-
-function getPersonChipHtml(pid, fromId, canRemove = false) {
+function getChip(pid, fromId, canRem = false) {
   const p = people.find(x => x.id === pid);
   const activeClass = selectedPersonId === pid ? 'active-touch' : '';
   return `
-    <div class="person-chip ${activeClass}" draggable="true" 
-         ondragstart="drag(event, '${pid}')" 
-         onclick="handlePersonClick(event, '${pid}')"
-         style="border-left: 4px solid ${p.color}">
+    <div class="person-chip ${activeClass}" onclick="event.stopPropagation(); selectedPersonId=(selectedPersonId==='${pid}'?null:'${pid}'); renderAll();" style="border-left:4px solid ${p.color}">
       ${p.name}
-      ${canRemove ? `<span class="remove-btn" onclick="event.stopPropagation(); moveToUnassigned('${pid}', '${fromId}')">✕</span>` : ''}
-    </div>
-  `;
+      ${canRem ? `<span class="remove-btn" onclick="event.stopPropagation(); selectedPersonId='${pid}'; handleMove('unassigned');">✕</span>` : ''}
+    </div>`;
 }
 
 function renderUnassigned() {
   const el = document.getElementById('unassignedArea');
-  el.onclick = () => handleTargetClick('unassigned');
-  el.innerHTML = unassigned.map(pid => getPersonChipHtml(pid, 'unassigned')).join('');
+  el.onclick = () => handleMove('unassigned');
+  el.innerHTML = unassigned.map(pid => getChip(pid, 'unassigned')).join('');
 }
 
 function renderRooms() {
-  const container = document.getElementById('roomContainer');
-  container.innerHTML = rooms.map((r, i) => `
-    <div class="room-block" ondrop="drop(event, '${r.id}')" ondragover="allowDrop(event)" onclick="handleTargetClick('${r.id}')">
-      <div style="font-size:10px; color:var(--text-dim); margin-bottom:10px;">ROOM ${i+1}</div>
-      <div class="room-slots">
-        ${r.occupants.map(pid => getPersonChipHtml(pid, r.id, true)).join('')}
-      </div>
+  document.getElementById('roomContainer').innerHTML = rooms.map((r, i) => `
+    <div class="room-block" onclick="handleMove('${r.id}')">
+      <div class="room-header"><span>ROOM ${i+1}</span></div>
+      <div class="room-slots">${r.occupants.map(pid => getChip(pid, r.id, true)).join('')}</div>
     </div>
   `).join('');
 }
 
-// --- Interaction (Mobile & Desktop) ---
-function handlePersonClick(e, pid) {
-  e.stopPropagation();
-  selectedPersonId = (selectedPersonId === pid) ? null : pid;
-  renderUnassigned();
-  renderRooms();
+function handleMove(targetId) {
+  if(!selectedPersonId) return;
+  unassigned = unassigned.filter(id => id !== selectedPersonId);
+  rooms.forEach(r => r.occupants = r.occupants.filter(id => id !== selectedPersonId));
+  if(targetId === 'unassigned') unassigned.push(selectedPersonId);
+  else rooms.find(r => r.id === targetId).occupants.push(selectedPersonId);
+  selectedPersonId = null; renderAll();
 }
 
-function handleTargetClick(targetId) {
-  if (!selectedPersonId) return;
-  const pid = selectedPersonId;
-  unassigned = unassigned.filter(id => id !== pid);
-  rooms.forEach(r => r.occupants = r.occupants.filter(id => id !== pid));
-  
-  if (targetId === 'unassigned') unassigned.push(pid);
-  else rooms.find(r => r.id === targetId).occupants.push(pid);
-  
-  selectedPersonId = null;
-  renderUnassigned(); renderRooms(); updateTotal();
-}
+function addNewRoom() { rooms.push({ id: 'r'+Date.now(), occupants: [] }); renderAll(); }
 
-function allowDrop(e) { e.preventDefault(); }
-function drag(e, pid) { selectedPersonId = null; e.dataTransfer.setData("pid", pid); }
-function drop(e, targetId) {
-  e.preventDefault();
-  const pid = e.dataTransfer.getData("pid");
-  handleTargetClick(targetId); // 复用点击逻辑处理分配
-}
-
-function moveToUnassigned(pid, fromId) {
-  rooms.find(r => r.id === fromId).occupants = rooms.find(r => r.id === fromId).occupants.filter(id => id !== pid);
-  unassigned.push(pid);
-  renderUnassigned(); renderRooms(); updateTotal();
-}
-
-function addNewRoom() { rooms.push({ id: 'r'+Date.now(), occupants: [] }); renderRooms(); }
-
-// --- Expense Logic ---
-function initExpenseUI() {
-  document.getElementById('expPayer').innerHTML = people.map(p => `<option value="${p.id}">${p.name} 垫付</option>`).join('');
+// ═══ 记账分摊 ═══
+function initExpUI() {
+  document.getElementById('expPayer').innerHTML = people.map(p => `<option value="${p.id}">${p.name} 垫付了</option>`).join('');
   document.getElementById('expParticipants').innerHTML = people.map(p => `
     <label class="part-badge"><input type="checkbox" class="part-check" value="${p.id}" checked><span>${p.name}</span></label>
   `).join('');
@@ -301,77 +276,50 @@ function addExpense() {
   const amt = parseFloat(document.getElementById('expAmount').value);
   const payer = document.getElementById('expPayer').value;
   const parts = Array.from(document.querySelectorAll('.part-check:checked')).map(c => c.value);
-  if(!desc || !amt || parts.length === 0) return showToast("信息不全!");
-  
+  if(!desc || isNaN(amt) || parts.length === 0) return;
   expenses.push({ id: Date.now(), desc, amount: amt, payerId: payer, participants: parts });
-  localStorage.setItem('bk_exp_v2', JSON.stringify(expenses));
-  renderExpenses(); updateTotal();
-  document.getElementById('expDesc').value = ''; document.getElementById('expAmount').value = '';
-  showToast("记账成功!");
+  localStorage.setItem('bk_exp_final_v3', JSON.stringify(expenses));
+  document.getElementById('expDesc').value=''; document.getElementById('expAmount').value='';
+  renderAll();
 }
 
 function renderExpenses() {
   const list = document.getElementById('expenseList');
+  if(expenses.length === 0) { list.innerHTML = '<div style="font-size:10px; opacity:0.3; text-align:center;">No extra expenses yet.</div>'; return; }
   list.innerHTML = expenses.map(e => `
-    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:13px;">
-      <div>${e.desc} <br> <small style="color:var(--text-dim)">${people.find(p=>p.id===e.payerId).name} 付款</small></div>
-      <div style="text-align:right;">
-        <b style="color:var(--neon-yellow)">$${e.amount}</b> 
-        <span onclick="deleteExp(${e.id})" style="margin-left:10px; color:var(--text-muted); cursor:pointer;">✕</span>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); font-size:12px;">
+      <div><b>${e.desc}</b><br><span style="opacity:0.5">${people.find(p=>p.id===e.payerId).name} 垫付</span></div>
+      <div style="text-align:right">
+        <span style="color:var(--neon-yellow); font-weight:bold;">$${e.amount}</span>
+        <span onclick="expenses=expenses.filter(x=>x.id!==${e.id}); renderAll();" style="margin-left:12px; cursor:pointer; opacity:0.3;">✕</span>
       </div>
     </div>
   `).join('');
 }
 
-function deleteExp(id) { expenses = expenses.filter(e=>e.id!==id); localStorage.setItem('bk_exp_v2', JSON.stringify(expenses)); renderExpenses(); updateTotal(); }
-
-// --- Totals & Modal ---
 function updateTotal() {
-  const hotel = hotels.find(h => h.id === selectedHotelId);
-  const extra = expenses.reduce((s, e) => s + e.amount, 0);
-  document.getElementById('totalDisplay').innerText = `$ ${(hotel.price + extra).toFixed(0)}`;
+  const hPrice = hotels.find(h => h.id === selectedHotelId).price;
+  const ePrice = expenses.reduce((s, e) => s + e.amount, 0);
+  document.getElementById('totalDisplay').innerText = `$ ${Math.round(hPrice + ePrice)}`;
 }
 
 function showCostBreakdown() {
-  const hotel = hotels.find(h => h.id === selectedHotelId);
-  let summary = {};
-  people.forEach(p => summary[p.id] = { hotel: 0, extra: 0 });
-
-  rooms.forEach(r => {
-    if(r.occupants.length > 0) {
-      const share = (hotel.price / rooms.length) / r.occupants.length;
-      r.occupants.forEach(pid => summary[pid].hotel += share);
-    }
-  });
-
-  expenses.forEach(e => {
-    const share = e.amount / e.participants.length;
-    e.participants.forEach(pid => summary[pid].extra += share);
-  });
-
+  const hPrice = hotels.find(h => h.id === selectedHotelId).price;
+  let res = {}; people.forEach(p => res[p.id] = 0);
+  rooms.forEach(r => { if(r.occupants.length) { const s = (hPrice/rooms.length)/r.occupants.length; r.occupants.forEach(id => res[id] += s); }});
+  expenses.forEach(e => { const s = e.amount/e.participants.length; e.participants.forEach(id => res[id] += s); });
   document.getElementById('breakdownList').innerHTML = people.map(p => `
     <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-      <span>${p.name}</span>
-      <span style="color:var(--neon-cyan); font-family:Orbitron;">$ ${(summary[p.id].hotel + summary[p.id].extra).toFixed(1)}</span>
+      <span>${p.name}</span><b style="color:var(--neon-cyan); font-family:Orbitron;">$${res[p.id].toFixed(1)}</b>
     </div>
   `).join('');
   document.getElementById('modalOverlay').style.display = 'flex';
 }
 
 function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
-function showToast(m) { const t = document.getElementById('toast'); t.innerText=m; t.style.display='block'; setTimeout(()=>t.style.display='none',2000); }
 
-// --- BG Animation ---
-let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0, hue = 180;
-document.addEventListener('mousemove', e => { targetX = e.clientX; targetY = e.clientY; });
-function updateBackground() {
-  mouseX += (targetX - mouseX) * 0.05; mouseY += (targetY - mouseY) * 0.05;
-  const spot = document.getElementById('cursorSpot');
-  if(spot) { spot.style.left = (mouseX-250)+'px'; spot.style.top = (mouseY-250)+'px'; }
-  requestAnimationFrame(updateBackground);
-}
-
-window.onload = init;
+document.addEventListener('mousemove', e => { targetX = e.clientX; targetY = e.clientY; hue = (e.clientX/window.innerWidth)*360; });
+window.onload = () => { initExpUI(); renderAll(); updateBackground(); };
 </script>
 </body>
 </html>
