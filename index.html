@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>来泼水吧 💦 Bangkok Songkran 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css">
-  <style>
+<style>
   :root {
     --bg-deep: #0a0014;
     --bg-card: rgba(255,255,255,0.04);
@@ -524,7 +523,6 @@
     padding: 8px 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     cursor: grab;
-    user-select: none;
   }
   .room-guest:last-of-type { border-bottom: none; }
   .guest-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -754,274 +752,18 @@
   .toast.show { display: block; }
 
   @media (max-width: 768px) {
-    body { padding-bottom: 150px; }
-    .hero { padding: 50px 20px 30px; }
     .hero h1 { font-size: 32px; }
     .hotel-grid { grid-template-columns: repeat(2, 1fr); }
     .rooms-grid { grid-template-columns: 1fr; }
-    .summary-stats { gap: 12px; }
-    .section-title { font-size: 18px; margin-top: 36px; }
+    .summary-stats { gap: 14px; }
+    .section-title { font-size: 18px; }
     .night-tabs { width: 100%; }
-    
-    /* Summary bar tweaks for mobile */
-    .summary-bar { padding: 12px 16px; }
-    .summary-inner { justify-content: center; gap: 16px; }
-    .summary-stats { justify-content: center; width: 100%; gap: 20px; }
-    .stat-value { font-size: 16px; }
-    .stat-label { font-size: 9px; }
-    .summary-btn { width: 100%; padding: 12px; font-size: 14px; margin-top: 4px; }
-    
-    /* Modal mobile adjustments */
-    .modal { max-height: 90vh; width: 95%; }
-    .modal-body { padding: 16px; }
   }
-  
   @media (max-width: 480px) {
     .hotel-grid { grid-template-columns: 1fr; }
-    .people-grid { grid-template-columns: repeat(3, 1fr); }
-    .hero h1 { font-size: 28px; }
-    .hero-sub { font-size: 10px; letter-spacing: 0.15em; }
-    .hero-date { font-size: 11px; padding: 8px 16px; }
-    
-    .room-card { border-radius: 12px; }
-    .room-header { padding: 10px 14px; }
-    .room-body { padding: 10px 14px; }
-    
-    /* Compact summary for very small screens */
-    .summary-stats { gap: 12px; }
-    .stat-value { font-size: 14px; }
-    .stat-value.total-name { display: none; } /* Hide hotel name to save space */
-    
-    /* Better touch targets */
-    .guest-remove { width: 32px; height: 32px; font-size: 14px; }
-    .music-btn { width: 44px; height: 44px; top: 16px; right: 16px; }
+    .people-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 26px; }
   }
-  /* ═══ Split Money ═══ */
-  .split-controls { display: flex; gap: 12px; margin-bottom: 20px; }
-  .action-btn {
-    flex: 1;
-    padding: 14px;
-    background: rgba(0,240,255,0.15);
-    border: 1px solid rgba(0,240,255,0.3);
-    border-radius: var(--radius);
-    color: var(--neon-cyan);
-    font-family: 'Orbitron', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    backdrop-filter: blur(10px);
-  }
-  .action-btn:hover { background: rgba(0,240,255,0.25); box-shadow: 0 0 20px rgba(0,240,255,0.2); transform: translateY(-2px); }
-  .action-btn.secondary {
-    background: rgba(255,0,229,0.15);
-    border-color: rgba(255,0,229,0.3);
-    color: var(--neon-magenta);
-  }
-  .action-btn.secondary:hover { background: rgba(255,0,229,0.25); box-shadow: 0 0 20px rgba(255,0,229,0.2); }
-
-  .expense-list { display: flex; flex-direction: column; gap: 10px; }
-  .expense-item {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-sm);
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s;
-  }
-  .expense-item:hover { border-color: rgba(255,255,255,0.2); }
-  .ex-info { flex: 1; }
-  .ex-desc { font-size: 14px; font-weight: 500; color: var(--text-w); margin-bottom: 4px; }
-  .ex-meta { font-size: 11px; color: var(--text-dim); }
-  .ex-amount {
-    font-family: 'Orbitron', monospace;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--neon-yellow);
-    margin-left: 16px;
-  }
-  .ex-delete {
-    width: 24px; height: 24px;
-    margin-left: 12px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,59,48,0.3);
-    background: rgba(255,59,48,0.1);
-    color: #ff3b30;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 12px;
-    opacity: 0.6;
-    transition: all 0.2s;
-  }
-  .ex-delete:hover { opacity: 1; transform: scale(1.1); }
-
-  /* Form Styles */
-  .form-group { margin-bottom: 16px; }
-  .form-label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; font-family: 'Orbitron'; letter-spacing: 0.05em; }
-  .form-input, .form-select {
-    width: 100%;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--glass-border);
-    border-radius: 8px;
-    padding: 12px;
-    color: #fff;
-    font-family: 'Exo 2', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-  .form-input:focus, .form-select:focus { border-color: var(--neon-cyan); }
-  
-  .beneficiary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 8px;
-  }
-  .ben-chip {
-    padding: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid transparent;
-    border-radius: 6px;
-    font-size: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-  }
-  .ben-chip.selected {
-    background: rgba(0,240,255,0.15);
-    border-color: var(--neon-cyan);
-    color: var(--neon-cyan);
-    font-weight: 600;
-  }
-
-  .settle-row {
-    padding: 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-  }
-  .settle-arrow { color: var(--text-muted); font-size: 10px; padding: 0 8px; }
-  .settle-amt { font-family: 'Orbitron'; color: var(--neon-green); font-weight: 700; margin-left: auto; }
-
-  /* ═══ Drink Bid ═══ */
-  .drink-bid-card {
-    background: linear-gradient(135deg, rgba(255,107,0,0.15), rgba(255,0,229,0.1));
-    border: 1px solid rgba(255,107,0,0.3);
-    border-radius: var(--radius);
-    padding: 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  .drink-bid-card::before {
-    content: '🍺';
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    font-size: 120px;
-    opacity: 0.1;
-    transform: rotate(15deg);
-  }
-  .bid-result {
-    font-family: 'Orbitron', monospace;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--neon-orange);
-    text-shadow: 0 0 20px rgba(255,107,0,0.4);
-    margin: 16px 0;
-    min-height: 40px;
-  }
-  .bid-multiplier {
-    font-size: 48px;
-    color: var(--neon-magenta);
-    text-shadow: 0 0 30px rgba(255,0,229,0.5);
-  }
-  .bid-btn {
-    background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));
-    color: #fff;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 100px;
-    font-family: 'Orbitron', monospace;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 0 20px rgba(255,107,0,0.3);
-    transition: all 0.3s;
-  }
-  .bid-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,107,0,0.5); }
-  .bid-btn:active { transform: scale(0.95); }
-
-  /* ═══ Rule Card ═══ */
-  .rule-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px dashed var(--glass-border);
-    border-radius: var(--radius-sm);
-    padding: 16px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-  .rule-card strong { color: var(--neon-cyan); }
-  .rule-list { list-style: none; padding-left: 0; }
-  .rule-list li { margin-bottom: 8px; position: relative; padding-left: 18px; }
-  .rule-list li::before {
-    content: '►';
-    position: absolute;
-    left: 0;
-    top: 2px;
-    font-size: 10px;
-    color: var(--neon-magenta);
-  }
-
-  .companion-card {
-    background: linear-gradient(135deg, rgba(255,0,229,0.1), rgba(0,240,255,0.1));
-    border: 1px dashed var(--neon-pink);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-top: 16px;
-    text-align: center;
-  }
-  .companion-result {
-    font-family: 'Orbitron', monospace;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--neon-pink);
-    text-shadow: 0 0 15px rgba(255,0,229,0.4);
-    margin: 12px 0;
-    min-height: 28px;
-  }
-  .companion-btn {
-    background: rgba(255,0,229,0.15);
-    border: 1px solid var(--neon-pink);
-    color: var(--neon-pink);
-    padding: 8px 20px;
-    border-radius: 100px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .companion-btn:hover { background: var(--neon-pink); color: #fff; box-shadow: 0 0 15px rgba(255,0,229,0.4); }
-
-  .bid-dare {
-    font-size: 13px;
-    color: var(--neon-yellow);
-    margin-top: 8px;
-    font-style: italic;
-    opacity: 0;
-    transition: opacity 0.5s;
-    min-height: 20px;
-  }
-  .bid-dare.show { opacity: 1; }
 </style>
 </head>
 <body>
@@ -1071,50 +813,10 @@
     <div class="section-sub">全阵容 · 9位泼水战士</div>
     <div class="people-grid" id="peopleGrid"></div>
 
-    <div class="section-title">Split Money</div>
-    <div class="section-sub">记账小本本 · 自动计算AA</div>
-    
-    <div class="split-controls">
-      <button class="action-btn" onclick="openExpenseModal()">+ 记一笔</button>
-      <button class="action-btn secondary" onclick="showSettlement()">结算方案</button>
-    </div>
-
-    <div id="expenseList" class="expense-list"></div>
-    
-    <div class="section-title" style="margin-top: 60px;">Room Bid</div>
-    <div class="section-sub">
-      拖拽调整 · 截止: 09/04 · <span style="color:var(--neon-yellow);cursor:pointer;text-decoration:underline" onclick="randomizeRooms()">🎲 每日随机</span>
-    </div>
-
+    <div class="section-title">Room Setup</div>
+    <div class="section-sub">拖拽调整 · 点 ✕ 移出 · 点 + 加房</div>
     <div class="night-tabs" id="nightTabs"></div>
     <div id="nightContents"></div>
-    
-    <div class="rule-card">
-      <div style="font-family:'Orbitron';font-weight:700;color:var(--neon-cyan);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em">
-        📜 Game &nbsp; Rules
-      </div>
-      <ul class="rule-list">
-        <li><strong>随机分配：</strong>每日 0:00 系统生成初始分配方案。</li>
-        <li><strong>自由调整：</strong>截止 <strong>04/09</strong> 前，你可以随意拖拽交换房间。</li>
-        <li><strong>锁定：</strong>04/09 后所有房间锁定，无法更改。</li>
-        <li><strong>Bid Your Room：</strong>如果不满意分配，可以使用下方工具生成酒局筹码，向他人发起挑战交换房间！</li>
-      </ul>
-    </div>
-
-    <!-- Drink Bid Module -->
-    <div class="drink-bid-card">
-      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase">DRINK FOR YOUR ROOM</div>
-      <div class="bid-result" id="bidResult">READY?</div>
-      <div class="bid-dare" id="bidDare"></div>
-      <button class="bid-btn" onclick="rollDrinkBid()">🎰 SPIN TO BID</button>
-
-      <!-- Companion Module -->
-      <div class="companion-card">
-        <div style="font-size:11px;color:var(--neon-pink);letter-spacing:0.05em;margin-bottom:8px">👯‍♀️ LUCKY COMPANION</div>
-        <div class="companion-result" id="compResult">?</div>
-        <button class="companion-btn" onclick="rollCompanion()">WHO DRINKS WITH YOU?</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1134,35 +836,6 @@
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
-
-<!-- Expense Modal -->
-<div class="modal-overlay" id="expenseModal">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>记一笔</h2>
-      <button class="modal-close" onclick="closeExpenseModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">WHO PAID</label>
-        <select class="form-select" id="exPayer"></select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">AMOUNT ($)</label>
-        <input type="number" class="form-input" id="exAmount" placeholder="0" inputmode="decimal">
-      </div>
-      <div class="form-group">
-        <label class="form-label">FOR WHAT</label>
-        <input type="text" class="form-input" id="exDesc" placeholder="Dinner, Taxi, etc.">
-      </div>
-      <div class="form-group">
-        <label class="form-label">FOR WHOM (Default: All)</label>
-        <div class="beneficiary-grid" id="exBen"></div>
-      </div>
-      <button class="action-btn" onclick="saveExpense()">CONFIRM</button>
-    </div>
   </div>
 </div>
 
@@ -1366,122 +1039,6 @@ function removeGuest(ni, ri, pid) {
   renderRooms(); renderSummary();
 }
 
-function randomizeRooms() {
-  if (new Date() > new Date('2026-04-09')) {
-    showToast('Bidding closed! 🔒');
-    return;
-  }
-  
-  if(!confirm('Randomize all room assignments for all days? 🎲')) return;
-
-  roomAssignments = {};
-  nightDates.forEach((nd, ni) => {
-    const present = people.filter(p => p.arrive <= nd.day && p.depart > nd.day);
-    // Shuffle
-    for (let i = present.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [present[i], present[j]] = [present[j], present[i]];
-    }
-    
-    // Group by gender to maintain basic rule (can be removed if mixed is allowed)
-    const males = present.filter(p => p.gender === 'male');
-    const females = present.filter(p => p.gender === 'female');
-    
-    const rooms = [];
-    
-    // Assign males
-    for (let i = 0; i < males.length; i += 2) {
-      rooms.push(i + 1 < males.length
-        ? { guests: [males[i].id, males[i+1].id], gender: 'male' }
-        : { guests: [males[i].id], gender: 'male' });
-    }
-    
-    // Assign females
-    for (let i = 0; i < females.length; i += 2) {
-      rooms.push(i + 1 < females.length
-        ? { guests: [females[i].id, females[i+1].id], gender: 'female' }
-        : { guests: [females[i].id], gender: 'female' });
-    }
-    
-    roomAssignments[ni] = rooms;
-  });
-  
-  renderRooms();
-  renderSummary();
-  showToast('Randomized! 🎲');
-}
-
-// ═══ Drink Bid ═══
-function rollDrinkBid() {
-  const drinks = ['Shot of Tequila', 'Shot of Vodka', 'Beer (Glass)', 'Beer (Bottle)', 'Cocktail', 'Water (Lucky!)'];
-  const multipliers = ['x1', 'x2', 'x3', 'x1.5', 'HALF'];
-  const dares = [
-    'Run around the room twice',
-    'Do 10 pushups',
-    'Send a voice message to ex',
-    'Dance for 1 min without music',
-    'Let someone post on your social media',
-    'Eat a spoon of spicy sauce',
-    'No phone for 1 hour',
-    'Sing a song loudly'
-  ];
-  
-  const resultEl = document.getElementById('bidResult');
-  const dareEl = document.getElementById('bidDare');
-  let count = 0;
-  
-  dareEl.classList.remove('show');
-  
-  // Animation
-  const interval = setInterval(() => {
-    const d = drinks[Math.floor(Math.random() * drinks.length)];
-    const m = multipliers[Math.floor(Math.random() * multipliers.length)];
-    resultEl.innerHTML = `${d} <span class="bid-multiplier">${m}</span>`;
-    count++;
-    if (count > 20) {
-      clearInterval(interval);
-      // Final result
-      const finalD = drinks[Math.floor(Math.random() * drinks.length)];
-      const finalM = multipliers[Math.floor(Math.random() * multipliers.length)];
-      const finalDare = dares[Math.floor(Math.random() * dares.length)];
-      
-      resultEl.innerHTML = `${finalD} <span class="bid-multiplier">${finalM}</span>`;
-      dareEl.textContent = `🔥 Dare: ${finalDare}`;
-      dareEl.classList.add('show');
-      
-      // Sound effect (simple beep using AudioContext)
-      if(audioCtx) {
-        const osc = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.3);
-        g.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.connect(g);
-        g.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
-      }
-    }
-  }, 80);
-}
-
-function rollCompanion() {
-  const others = people.filter(p => true); // Can filter out self if we had user login
-  const resEl = document.getElementById('compResult');
-  let count = 0;
-  const interval = setInterval(() => {
-    const p = others[Math.floor(Math.random() * others.length)];
-    resEl.textContent = p.name;
-    count++;
-    if (count > 15) {
-      clearInterval(interval);
-      const finalP = others[Math.floor(Math.random() * others.length)];
-      resEl.textContent = "🥂 " + finalP.name;
-    }
-  }, 100);
-}
-
 // ═══ Drag & Drop ═══
 let dragPerson = null, dragNight = null, dragRoom = null;
 
@@ -1506,10 +1063,6 @@ function handleDrop(e, ni, ri) {
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
   if (!dragPerson || dragNight !== ni) return;
-  if (new Date() > new Date('2026-04-09')) {
-    showToast('Bidding closed! 🔒');
-    return;
-  }
   const person = people.find(p => p.id === dragPerson);
   const target = roomAssignments[ni][ri];
   if (target.gender !== person.gender) { showToast('男女不能混住哦！🚫'); return; }
@@ -1561,7 +1114,6 @@ function showCostBreakdown() {
       </div>
     </div>
   `).join('');
-  document.querySelector('#modalOverlay h2').textContent = '每人费用明细';
   document.getElementById('modalOverlay').classList.add('show');
 }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
@@ -1982,140 +1534,6 @@ document.addEventListener('touchmove', (e) => {
 
 requestAnimationFrame(updateBackground);
 
-// ═══ Split Money ═══
-let expenses = [];
-
-function renderExpenses() {
-  const el = document.getElementById('expenseList');
-  if (expenses.length === 0) {
-    el.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:12px">No expenses yet</div>';
-    return;
-  }
-  el.innerHTML = expenses.map((ex, i) => {
-    const payer = people.find(p => p.id === ex.payer);
-    return `
-    <div class="expense-item">
-      <div class="p-avatar ${payer.gender}" style="width:32px;height:32px;font-size:12px;margin-right:12px">${payer.name[0]}</div>
-      <div class="ex-info">
-        <div class="ex-desc">${ex.desc || 'Expense'}</div>
-        <div class="ex-meta">Paid by ${payer.name} · For ${ex.for.length === people.length ? 'All' : ex.for.length + ' people'}</div>
-      </div>
-      <div class="ex-amount">$${ex.amount}</div>
-      <button class="ex-delete" onclick="deleteExpense(${i})">✕</button>
-    </div>`;
-  }).join('');
-}
-
-function openExpenseModal() {
-  const sel = document.getElementById('exPayer');
-  sel.innerHTML = people.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-  
-  const ben = document.getElementById('exBen');
-  ben.innerHTML = people.map(p => 
-    `<div class="ben-chip selected" onclick="this.classList.toggle('selected')" data-id="${p.id}">${p.name}</div>`
-  ).join('');
-
-  document.getElementById('exAmount').value = '';
-  document.getElementById('exDesc').value = '';
-  
-  document.getElementById('expenseModal').classList.add('show');
-}
-
-function closeExpenseModal() {
-  document.getElementById('expenseModal').classList.remove('show');
-}
-
-function saveExpense() {
-  const payer = document.getElementById('exPayer').value;
-  const amount = parseFloat(document.getElementById('exAmount').value);
-  const desc = document.getElementById('exDesc').value;
-  
-  if (!amount || amount <= 0) { showToast('Amount required!'); return; }
-  
-  const benChips = document.querySelectorAll('#exBen .ben-chip.selected');
-  const beneficiaries = Array.from(benChips).map(c => c.dataset.id);
-  
-  if (beneficiaries.length === 0) { showToast('Select at least 1 person!'); return; }
-  
-  expenses.push({
-    payer,
-    amount,
-    desc,
-    for: beneficiaries,
-    date: new Date()
-  });
-  
-  renderExpenses();
-  closeExpenseModal();
-  showToast('Saved! 💰');
-}
-
-function deleteExpense(index) {
-  if(confirm('Delete this expense?')) {
-    expenses.splice(index, 1);
-    renderExpenses();
-  }
-}
-
-function showSettlement() {
-  const balances = {};
-  people.forEach(p => balances[p.id] = 0);
-  
-  expenses.forEach(ex => {
-    const share = ex.amount / ex.for.length;
-    balances[ex.payer] += ex.amount;
-    ex.for.forEach(uid => {
-      balances[uid] -= share;
-    });
-  });
-  
-  const debtors = [];
-  const creditors = [];
-  
-  Object.entries(balances).forEach(([id, bal]) => {
-    if (bal < -0.01) debtors.push({ id, amount: bal });
-    else if (bal > 0.01) creditors.push({ id, amount: bal });
-  });
-  
-  debtors.sort((a,b) => a.amount - b.amount);
-  creditors.sort((a,b) => b.amount - a.amount);
-  
-  const transfers = [];
-  let i = 0, j = 0;
-  
-  while (i < debtors.length && j < creditors.length) {
-    const debt = debtors[i];
-    const credit = creditors[j];
-    const amount = Math.min(Math.abs(debt.amount), credit.amount);
-    
-    transfers.push({ from: debt.id, to: credit.id, amount: amount });
-    
-    debt.amount += amount;
-    credit.amount -= amount;
-    
-    if (Math.abs(debt.amount) < 0.01) i++;
-    if (credit.amount < 0.01) j++;
-  }
-  
-  const html = transfers.length === 0 
-    ? '<div style="text-align:center;padding:20px">No debts! 🎉</div>'
-    : transfers.map(t => {
-        const from = people.find(p => p.id === t.from);
-        const to = people.find(p => p.id === t.to);
-        return `
-        <div class="settle-row">
-          <div style="font-weight:600;width:60px">${from.name}</div>
-          <div class="settle-arrow">➜</div>
-          <div style="font-weight:600;width:60px">${to.name}</div>
-          <div class="settle-amt">$${t.amount.toFixed(2)}</div>
-        </div>`;
-      }).join('');
-      
-  document.querySelector('#modalOverlay h2').textContent = '结算方案 (Settlement)';
-  document.getElementById('modalBody').innerHTML = html;
-  document.getElementById('modalOverlay').classList.add('show');
-}
-
 // ═══ Init ═══
 initRoomAssignments();
 renderHotels();
@@ -2123,27 +1541,8 @@ renderPeople();
 renderNightTabs();
 renderRooms();
 renderSummary();
-renderExpenses();
 createDrops();
 </script>
 
-<!-- Mobile Drag Drop Polyfill -->
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/scroll-behaviour.min.js"></script>
-<script>
-  // Fix for mobile drag and drop
-  var polyfillOptions = {
-    // use this to make use of the scroll behaviour
-    dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
-  };
-  MobileDragDrop.polyfill(polyfillOptions);
-
-  // Fix for iOS scrolling while dragging
-  document.addEventListener('touchmove', function(e) {
-      if (e.target.classList.contains('dnd-poly-drag-image') || e.target.closest('.dnd-poly-drag-image')) {
-          e.preventDefault();
-      }
-  }, { passive: false });
-</script>
 </body>
 </html>
