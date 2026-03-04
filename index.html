@@ -909,6 +909,119 @@
   .settle-arrow { color: var(--text-muted); font-size: 10px; padding: 0 8px; }
   .settle-amt { font-family: 'Orbitron'; color: var(--neon-green); font-weight: 700; margin-left: auto; }
 
+  /* ═══ Drink Bid ═══ */
+  .drink-bid-card {
+    background: linear-gradient(135deg, rgba(255,107,0,0.15), rgba(255,0,229,0.1));
+    border: 1px solid rgba(255,107,0,0.3);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .drink-bid-card::before {
+    content: '🍺';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 120px;
+    opacity: 0.1;
+    transform: rotate(15deg);
+  }
+  .bid-result {
+    font-family: 'Orbitron', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--neon-orange);
+    text-shadow: 0 0 20px rgba(255,107,0,0.4);
+    margin: 16px 0;
+    min-height: 40px;
+  }
+  .bid-multiplier {
+    font-size: 48px;
+    color: var(--neon-magenta);
+    text-shadow: 0 0 30px rgba(255,0,229,0.5);
+  }
+  .bid-btn {
+    background: linear-gradient(90deg, var(--neon-orange), var(--neon-pink));
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255,107,0,0.3);
+    transition: all 0.3s;
+  }
+  .bid-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,107,0,0.5); }
+  .bid-btn:active { transform: scale(0.95); }
+
+  /* ═══ Rule Card ═══ */
+  .rule-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--glass-border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .rule-card strong { color: var(--neon-cyan); }
+  .rule-list { list-style: none; padding-left: 0; }
+  .rule-list li { margin-bottom: 8px; position: relative; padding-left: 18px; }
+  .rule-list li::before {
+    content: '►';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    font-size: 10px;
+    color: var(--neon-magenta);
+  }
+
+  .companion-card {
+    background: linear-gradient(135deg, rgba(255,0,229,0.1), rgba(0,240,255,0.1));
+    border: 1px dashed var(--neon-pink);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .companion-result {
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px rgba(255,0,229,0.4);
+    margin: 12px 0;
+    min-height: 28px;
+  }
+  .companion-btn {
+    background: rgba(255,0,229,0.15);
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .companion-btn:hover { background: var(--neon-pink); color: #fff; box-shadow: 0 0 15px rgba(255,0,229,0.4); }
+
+  .bid-dare {
+    font-size: 13px;
+    color: var(--neon-yellow);
+    margin-top: 8px;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.5s;
+    min-height: 20px;
+  }
+  .bid-dare.show { opacity: 1; }
 </style>
 </head>
 <body>
@@ -958,12 +1071,7 @@
     <div class="section-sub">全阵容 · 9位泼水战士</div>
     <div class="people-grid" id="peopleGrid"></div>
 
-    <div class="section-title">Room Setup</div>
-    <div class="section-sub">拖拽调整 · 点 ✕ 移出 · 点 + 加房</div>
-    <div class="night-tabs" id="nightTabs"></div>
-    <div id="nightContents"></div>
-
-    <div class="section-title" style="margin-top: 60px;">Split Money</div>
+    <div class="section-title">Split Money</div>
     <div class="section-sub">记账小本本 · 自动计算AA</div>
     
     <div class="split-controls">
@@ -972,6 +1080,41 @@
     </div>
 
     <div id="expenseList" class="expense-list"></div>
+    
+    <div class="section-title" style="margin-top: 60px;">Room Bid</div>
+    <div class="section-sub">
+      拖拽调整 · 截止: 09/04 · <span style="color:var(--neon-yellow);cursor:pointer;text-decoration:underline" onclick="randomizeRooms()">🎲 每日随机</span>
+    </div>
+
+    <div class="night-tabs" id="nightTabs"></div>
+    <div id="nightContents"></div>
+    
+    <div class="rule-card">
+      <div style="font-family:'Orbitron';font-weight:700;color:var(--neon-cyan);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.1em">
+        📜 Game &nbsp; Rules
+      </div>
+      <ul class="rule-list">
+        <li><strong>随机分配：</strong>每日 0:00 系统生成初始分配方案。</li>
+        <li><strong>自由调整：</strong>截止 <strong>04/09</strong> 前，你可以随意拖拽交换房间。</li>
+        <li><strong>锁定：</strong>04/09 后所有房间锁定，无法更改。</li>
+        <li><strong>Bid Your Room：</strong>如果不满意分配，可以使用下方工具生成酒局筹码，向他人发起挑战交换房间！</li>
+      </ul>
+    </div>
+
+    <!-- Drink Bid Module -->
+    <div class="drink-bid-card">
+      <div style="font-size:12px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase">DRINK FOR YOUR ROOM</div>
+      <div class="bid-result" id="bidResult">READY?</div>
+      <div class="bid-dare" id="bidDare"></div>
+      <button class="bid-btn" onclick="rollDrinkBid()">🎰 SPIN TO BID</button>
+
+      <!-- Companion Module -->
+      <div class="companion-card">
+        <div style="font-size:11px;color:var(--neon-pink);letter-spacing:0.05em;margin-bottom:8px">👯‍♀️ LUCKY COMPANION</div>
+        <div class="companion-result" id="compResult">?</div>
+        <button class="companion-btn" onclick="rollCompanion()">WHO DRINKS WITH YOU?</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1223,6 +1366,122 @@ function removeGuest(ni, ri, pid) {
   renderRooms(); renderSummary();
 }
 
+function randomizeRooms() {
+  if (new Date() > new Date('2026-04-09')) {
+    showToast('Bidding closed! 🔒');
+    return;
+  }
+  
+  if(!confirm('Randomize all room assignments for all days? 🎲')) return;
+
+  roomAssignments = {};
+  nightDates.forEach((nd, ni) => {
+    const present = people.filter(p => p.arrive <= nd.day && p.depart > nd.day);
+    // Shuffle
+    for (let i = present.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [present[i], present[j]] = [present[j], present[i]];
+    }
+    
+    // Group by gender to maintain basic rule (can be removed if mixed is allowed)
+    const males = present.filter(p => p.gender === 'male');
+    const females = present.filter(p => p.gender === 'female');
+    
+    const rooms = [];
+    
+    // Assign males
+    for (let i = 0; i < males.length; i += 2) {
+      rooms.push(i + 1 < males.length
+        ? { guests: [males[i].id, males[i+1].id], gender: 'male' }
+        : { guests: [males[i].id], gender: 'male' });
+    }
+    
+    // Assign females
+    for (let i = 0; i < females.length; i += 2) {
+      rooms.push(i + 1 < females.length
+        ? { guests: [females[i].id, females[i+1].id], gender: 'female' }
+        : { guests: [females[i].id], gender: 'female' });
+    }
+    
+    roomAssignments[ni] = rooms;
+  });
+  
+  renderRooms();
+  renderSummary();
+  showToast('Randomized! 🎲');
+}
+
+// ═══ Drink Bid ═══
+function rollDrinkBid() {
+  const drinks = ['Shot of Tequila', 'Shot of Vodka', 'Beer (Glass)', 'Beer (Bottle)', 'Cocktail', 'Water (Lucky!)'];
+  const multipliers = ['x1', 'x2', 'x3', 'x1.5', 'HALF'];
+  const dares = [
+    'Run around the room twice',
+    'Do 10 pushups',
+    'Send a voice message to ex',
+    'Dance for 1 min without music',
+    'Let someone post on your social media',
+    'Eat a spoon of spicy sauce',
+    'No phone for 1 hour',
+    'Sing a song loudly'
+  ];
+  
+  const resultEl = document.getElementById('bidResult');
+  const dareEl = document.getElementById('bidDare');
+  let count = 0;
+  
+  dareEl.classList.remove('show');
+  
+  // Animation
+  const interval = setInterval(() => {
+    const d = drinks[Math.floor(Math.random() * drinks.length)];
+    const m = multipliers[Math.floor(Math.random() * multipliers.length)];
+    resultEl.innerHTML = `${d} <span class="bid-multiplier">${m}</span>`;
+    count++;
+    if (count > 20) {
+      clearInterval(interval);
+      // Final result
+      const finalD = drinks[Math.floor(Math.random() * drinks.length)];
+      const finalM = multipliers[Math.floor(Math.random() * multipliers.length)];
+      const finalDare = dares[Math.floor(Math.random() * dares.length)];
+      
+      resultEl.innerHTML = `${finalD} <span class="bid-multiplier">${finalM}</span>`;
+      dareEl.textContent = `🔥 Dare: ${finalDare}`;
+      dareEl.classList.add('show');
+      
+      // Sound effect (simple beep using AudioContext)
+      if(audioCtx) {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.3);
+        g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+  }, 80);
+}
+
+function rollCompanion() {
+  const others = people.filter(p => true); // Can filter out self if we had user login
+  const resEl = document.getElementById('compResult');
+  let count = 0;
+  const interval = setInterval(() => {
+    const p = others[Math.floor(Math.random() * others.length)];
+    resEl.textContent = p.name;
+    count++;
+    if (count > 15) {
+      clearInterval(interval);
+      const finalP = others[Math.floor(Math.random() * others.length)];
+      resEl.textContent = "🥂 " + finalP.name;
+    }
+  }, 100);
+}
+
 // ═══ Drag & Drop ═══
 let dragPerson = null, dragNight = null, dragRoom = null;
 
@@ -1247,6 +1506,10 @@ function handleDrop(e, ni, ri) {
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
   if (!dragPerson || dragNight !== ni) return;
+  if (new Date() > new Date('2026-04-09')) {
+    showToast('Bidding closed! 🔒');
+    return;
+  }
   const person = people.find(p => p.id === dragPerson);
   const target = roomAssignments[ni][ri];
   if (target.gender !== person.gender) { showToast('男女不能混住哦！🚫'); return; }
